@@ -1,4 +1,3 @@
-import { checkImage } from "./action-creators/postActions";
 import Post, { Image } from "../../models/postModel";
 import ActionType from "./action-types";
 
@@ -36,11 +35,36 @@ interface CheckImage {
 }
 interface DeleteImages {
   type: ActionType.DELETE_IMAGES;
-  payload: Image[];
+  payload: string[];
 }
 
 interface SortByTitleAction {
   type: ActionType.SORT_BY_TITLE;
+  payload: Image[];
+}
+
+interface SortByDateAction {
+  type: ActionType.SORT_BY_DATE;
+  payload: Image[];
+}
+
+interface SortBySizeAction {
+  type: ActionType.SORT_BY_SIZE;
+  payload: Image[];
+}
+
+interface DeleteCheckedImage {
+  type: ActionType.DELETE_CHECKED_IMAGE;
+  payload: Image[];
+}
+
+interface RemoveChecks {
+  type: ActionType.REMOVE_CHECKS;
+  payload: [];
+}
+
+interface SearchImages {
+  type: ActionType.SEARCH_IMAGES;
   payload: Image[];
 }
 
@@ -53,4 +77,9 @@ export type Action =
   | GetImagesSuccessAction
   | CheckImage
   | DeleteImages
-  | SortByTitleAction;
+  | SortByTitleAction
+  | SortByDateAction
+  | SortBySizeAction
+  | DeleteCheckedImage
+  | RemoveChecks
+  | SearchImages;

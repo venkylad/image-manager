@@ -30,10 +30,10 @@ export const postReducer = (
 interface ImageState {
   loading: boolean;
   error: string | null;
-  data: Image[] | null;
+  data: Image[] | [];
 }
 
-const initial = { loading: false, error: null, data: null };
+const initial = { loading: false, error: null, data: [] };
 
 export const imageReducer = (
   state: ImageState = initial,
@@ -41,12 +41,20 @@ export const imageReducer = (
 ): ImageState => {
   switch (action.type) {
     case ActionType.GET_IMAGES:
-      return { loading: true, error: null, data: null };
+      return { loading: true, error: null, data: [] };
     case ActionType.GET_IMAGES_SUCCESS:
       return { loading: false, error: null, data: action.payload };
     case ActionType.GET_IMAGES_FAIL:
-      return { loading: false, error: action.payload, data: null };
+      return { loading: false, error: action.payload, data: [] };
     case ActionType.SORT_BY_TITLE:
+      return { loading: false, error: null, data: action.payload };
+    case ActionType.SORT_BY_DATE:
+      return { loading: false, error: null, data: action.payload };
+    case ActionType.SORT_BY_SIZE:
+      return { loading: false, error: null, data: action.payload };
+    case ActionType.DELETE_CHECKED_IMAGE:
+      return { loading: false, error: null, data: action.payload };
+    case ActionType.SEARCH_IMAGES:
       return { loading: false, error: null, data: action.payload };
     default:
       return state;
@@ -56,6 +64,10 @@ export const imageReducer = (
 export const checkImageReducer = (state: string[] = [], action: Action) => {
   switch (action.type) {
     case ActionType.CHECK_IMAGE:
+      return action.payload;
+    case ActionType.DELETE_IMAGES:
+      return action.payload;
+    case ActionType.REMOVE_CHECKS:
       return action.payload;
     default:
       return state;

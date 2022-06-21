@@ -34,25 +34,7 @@ export const getImages = () => async (dispatch: Dispatch<Action>) => {
     });
 
     const { data } = await axios.get<Image[]>(
-      "https://api.unsplash.com/photos/?client_id=63XyR-MdNNJwESg67izcfmHsZOB07CMpSZd0iQ4nshI&per_page=20"
-    );
-
-    dispatch({
-      type: ActionType.GET_IMAGES_SUCCESS,
-      payload: data,
-    });
-  } catch (error: any) {
-    dispatch({
-      type: ActionType.GET_IMAGES_FAIL,
-      payload: error.message,
-    });
-  }
-};
-
-export const sortByTitle = () => async (dispatch: Dispatch<Action>) => {
-  try {
-    const { data } = await axios.get<Image[]>(
-      "https://api.unsplash.com/photos/?client_id=63XyR-MdNNJwESg67izcfmHsZOB07CMpSZd0iQ4nshI&per_page=20"
+      "https://api.unsplash.com/photos/?client_id=63XyR-MdNNJwESg67izcfmHsZOB07CMpSZd0iQ4nshI&per_page=20&orientation=landscape"
     );
 
     const payload = data.sort((a, b) =>
@@ -60,19 +42,80 @@ export const sortByTitle = () => async (dispatch: Dispatch<Action>) => {
         ?.split(" ")[0]
         ?.localeCompare(b?.description?.split(" ")[0])
     );
-    console.log(payload);
+
     dispatch({
-      type: ActionType.SORT_BY_TITLE,
+      type: ActionType.GET_IMAGES_SUCCESS,
       payload,
     });
   } catch (error: any) {
-    console.log(error.message);
     dispatch({
       type: ActionType.GET_IMAGES_FAIL,
       payload: error.message,
     });
   }
 };
+
+export const sortByTitle =
+  (imageData: Image[]) => async (dispatch: Dispatch<Action>) => {
+    try {
+      const payload = imageData.sort((a, b) =>
+        a?.description
+          ?.split(" ")[0]
+          ?.localeCompare(b?.description?.split(" ")[0])
+      );
+      console.log(payload);
+      dispatch({
+        type: ActionType.SORT_BY_TITLE,
+        payload,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+      dispatch({
+        type: ActionType.GET_IMAGES_FAIL,
+        payload: error.message,
+      });
+    }
+  };
+
+export const sortByDate =
+  (imageData: Image[]) => async (dispatch: Dispatch<Action>) => {
+    try {
+      const payload = imageData?.sort((a, b) =>
+        a?.created_at?.localeCompare(b?.created_at)
+      );
+      console.log(payload);
+      dispatch({
+        type: ActionType.SORT_BY_DATE,
+        payload,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+      dispatch({
+        type: ActionType.GET_IMAGES_FAIL,
+        payload: error.message,
+      });
+    }
+  };
+
+export const sortBySize =
+  (imageData: Image[]) => async (dispatch: Dispatch<Action>) => {
+    try {
+      const payload = imageData.sort(
+        (a, b) => a?.width * a?.height - b?.width * b?.height
+      );
+      console.log(payload);
+      dispatch({
+        type: ActionType.SORT_BY_SIZE,
+        payload,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+      dispatch({
+        type: ActionType.GET_IMAGES_FAIL,
+        payload: error.message,
+      });
+    }
+  };
 
 export const checkImage =
   (checked: string[], id: string) => async (dispatch: Dispatch<Action>) => {
@@ -87,6 +130,83 @@ export const checkImage =
       dispatch({
         type: ActionType.CHECK_IMAGE,
         payload: checked,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+export const deleteCheckedImages =
+  (imageData: Image[], checked: string[]) =>
+  async (dispatch: Dispatch<Action>) => {
+    try {
+      const payload = imageData.filter((array) =>
+        checked.every((filter) => !(filter === array.id))
+      );
+      dispatch({
+        type: ActionType.DELETE_CHECKED_IMAGE,
+        payload: payload,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+export const deleteAllCheckedImage =
+  (imageData: Image[], checked: string[]) =>
+  async (dispatch: Dispatch<Action>) => {
+    try {
+      const allImages = imageData.map(({ id }) => id);
+
+      checked = checked.concat(allImages);
+
+      dispatch({
+        type: ActionType.DELETE_IMAGES,
+        payload: checked,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+export const removeCheckOnImages = () => async (dispatch: Dispatch<Action>) => {
+  try {
+    dispatch({
+      type: ActionType.REMOVE_CHECKS,
+      payload: [],
+    });
+  } catch (error: any) {
+    console.log(error);
+  }
+};
+
+export const searchImage =
+  (imageData: Image[], searchText: string) =>
+  async (dispatch: Dispatch<Action>) => {
+    try {
+      let images = imageData;
+      let payload;
+      payload = images?.filter((val) => {
+        if (searchText === "") {
+          return imageData;
+        } else {
+          return val?.description
+            ?.split(" ")[0]
+            ?.toLowerCase()
+            .includes(searchText.toLowerCase());
+        }
+      });
+
+      if (searchText === "") {
+        console.log(imageData);
+        payload = images;
+      }
+
+      console.log(imageData);
+
+      dispatch({
+        type: ActionType.SEARCH_IMAGES,
+        payload,
       });
     } catch (error: any) {
       console.log(error);

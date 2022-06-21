@@ -21,10 +21,15 @@ const Image: React.FC<Props> = ({ image, title = "Unknown", selected, id }) => {
         onChange={() => {
           dispatch(postActions.checkImage(checked, id));
         }}
+        checked={checked.includes(id)}
         className="absolute top-1 left-1 w-4 h-4 rounded border border-[#CCD2E2]"
       />
-      <div className="w-full p-2 h-24 overflow-hidden rounded">
-        <img src={image} alt="" className="w-full  object-cover" />
+      <div className="w-full h-24 p-2 overflow-hidden rounded">
+        <img
+          src={image}
+          alt=""
+          className="object-cover object-center w-full h-full overflow-hidden rounded"
+        />
       </div>
       <p className="p-2 text-xs font-semibold">{title}</p>
     </div>

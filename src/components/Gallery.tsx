@@ -12,7 +12,6 @@ type Props = {
 
 const Gallery: React.FC<Props> = ({ images }) => {
   const [selected, setSelected] = useState<string>("");
-  const [checked, setChecked] = useState<string[]>([]);
 
   const handleSelected = (id: string) => {
     if (selected !== id) {
@@ -20,16 +19,8 @@ const Gallery: React.FC<Props> = ({ images }) => {
     }
   };
 
-  const handleChecked = (id: string) => {
-    const existingImage = checked.some((item) => item === id);
-    if (!existingImage) {
-      setChecked([...checked, id]);
-    } else {
-      setChecked(checked.filter((item) => item !== id));
-    }
-  };
   return (
-    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+    <div className="grid grid-cols-2 gap-4 mt-8 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
       {images?.data?.map((item) => {
         return (
           <div key={item?.id} onClick={() => handleSelected(item?.id)}>

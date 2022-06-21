@@ -14,11 +14,9 @@ const App: FC = () => {
     dispatch(postActions.getImages());
   }, [dispatch]);
 
-  const { loading, data } = useSelector((state) => state.posts);
   const images = useSelector((state) => state.images);
   const checked = useSelector((state) => state.checked);
 
-  console.log(checked, "IMAGES");
   return (
     <main className="px-6 pt-10">
       <Header />
