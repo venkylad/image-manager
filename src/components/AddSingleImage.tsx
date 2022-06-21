@@ -93,7 +93,13 @@ const AddSingleImage: React.FC<Props> = ({ open, close }) => {
               onClick={() => {
                 close();
                 const data = images?.data;
-                dispatch(postActions.addNewImage(data, image));
+                dispatch(
+                  postActions.addNewImage(data, {
+                    ...image,
+                    description: title,
+                  })
+                );
+                setTitle("");
               }}
             >
               Submit
