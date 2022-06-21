@@ -12,6 +12,7 @@ import {
   searchImage,
 } from "../store/actions/action-creators/postActions";
 import AddImage from "./AddImage";
+import AddSingleImage from "./AddSingleImage";
 
 const Header: React.FC = () => {
   const checked = useSelector((state) => state.checked);
@@ -27,6 +28,7 @@ const Header: React.FC = () => {
   return (
     <>
       <AddImage open={openModal} close={() => setOpenModal(false)} />
+
       <div className="flex flex-wrap items-center justify-between mb-3">
         <div>
           <h3 className="mb-2 text-xl font-semibold">Media Library</h3>

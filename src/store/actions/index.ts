@@ -67,7 +67,20 @@ interface SearchImages {
   type: ActionType.SEARCH_IMAGES;
   payload: Image[];
 }
+interface GetSearchImages {
+  type: ActionType.GET_SEARCH_IMAGES;
+  payload: Image[];
+}
 
+interface SelectImageToAdd {
+  type: ActionType.SELECT_IMAGE_TO_ADD;
+  payload: Image;
+}
+
+interface AddNewImage {
+  type: ActionType.ADD_NEW_IMAGE;
+  payload: Image[];
+}
 export type Action =
   | GetPostRequestAction
   | GetPostSuccessAction
@@ -82,4 +95,7 @@ export type Action =
   | SortBySizeAction
   | DeleteCheckedImage
   | RemoveChecks
-  | SearchImages;
+  | SearchImages
+  | GetSearchImages
+  | SelectImageToAdd
+  | AddNewImage;

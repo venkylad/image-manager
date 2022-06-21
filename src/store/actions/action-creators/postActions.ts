@@ -27,33 +27,46 @@ export const getPosts = () => async (dispatch: Dispatch<Action>) => {
   }
 };
 
-export const getImages = () => async (dispatch: Dispatch<Action>) => {
-  try {
-    dispatch({
-      type: ActionType.GET_IMAGES,
-    });
+export const getImages =
+  (url: string) => async (dispatch: Dispatch<Action>) => {
+    try {
+      dispatch({
+        type: ActionType.GET_IMAGES,
+      });
 
-    const { data } = await axios.get<Image[]>(
-      "https://api.unsplash.com/photos/?client_id=63XyR-MdNNJwESg67izcfmHsZOB07CMpSZd0iQ4nshI&per_page=20&orientation=landscape"
-    );
+      const { data } = await axios.get<Image[]>(url);
 
-    const payload = data.sort((a, b) =>
-      a?.description
-        ?.split(" ")[0]
-        ?.localeCompare(b?.description?.split(" ")[0])
-    );
+      const payload = data.sort((a, b) =>
+        a?.description
+          ?.split(" ")[0]
+          ?.localeCompare(b?.description?.split(" ")[0])
+      );
 
-    dispatch({
-      type: ActionType.GET_IMAGES_SUCCESS,
-      payload,
-    });
-  } catch (error: any) {
-    dispatch({
-      type: ActionType.GET_IMAGES_FAIL,
-      payload: error.message,
-    });
-  }
-};
+      dispatch({
+        type: ActionType.GET_IMAGES_SUCCESS,
+        payload,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionType.GET_IMAGES_FAIL,
+        payload: error.message,
+      });
+    }
+  };
+
+export const getSearchImages =
+  (url: string) => async (dispatch: Dispatch<Action>) => {
+    try {
+      const { data } = await axios.get(url);
+
+      dispatch({
+        type: ActionType.GET_SEARCH_IMAGES,
+        payload: data?.results,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
 export const sortByTitle =
   (imageData: Image[]) => async (dispatch: Dispatch<Action>) => {
@@ -169,6 +182,18 @@ export const deleteAllCheckedImage =
     }
   };
 
+export const addNewImage =
+  (imageData: Image[], image: Image) => async (dispatch: Dispatch<Action>) => {
+    try {
+      dispatch({
+        type: ActionType.ADD_NEW_IMAGE,
+        payload: imageData.concat(image),
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
 export const removeCheckOnImages = () => async (dispatch: Dispatch<Action>) => {
   try {
     dispatch({
@@ -207,6 +232,18 @@ export const searchImage =
       dispatch({
         type: ActionType.SEARCH_IMAGES,
         payload,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+export const selectImageToAdd =
+  (image: Image) => async (dispatch: Dispatch<Action>) => {
+    try {
+      dispatch({
+        type: ActionType.SELECT_IMAGE_TO_ADD,
+        payload: image,
       });
     } catch (error: any) {
       console.log(error);
