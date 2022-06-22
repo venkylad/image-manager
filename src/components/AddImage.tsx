@@ -144,7 +144,7 @@ const AddImage: React.FC<Props> = ({ open, close }) => {
         </div>
       </Modal>
       {open && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60" />
+        <div className="absolute top-0 left-0 w-full h-full overflow-y-hidden bg-black opacity-60" />
       )}
       <AddSingleImage open={openModal} close={() => setOpenModal(false)} />
     </div>
