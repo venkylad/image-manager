@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Bin from "../images/bin.svg";
 import BinActive from "../images/bin-act.svg";
 import Search from "../images/mag.svg";
@@ -12,7 +12,6 @@ import {
   searchImage,
 } from "../store/actions/action-creators/postActions";
 import AddImage from "./AddImage";
-import { Image } from "../models/postModel";
 
 const Header: React.FC = () => {
   const checked = useSelector((state) => state.checked);
@@ -22,40 +21,8 @@ const Header: React.FC = () => {
   const [sortBy, setSortBy] = useState("title");
   const [selectAll, setSelectAll] = useState(false);
   const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState(images?.data || []);
 
   const [openModal, setOpenModal] = useState(false);
-
-  console.log(searchResults);
-
-  const filterImages = (e: any) => {
-    const keyword = e.target.value;
-
-    if (keyword !== "") {
-      const results = searchResults.filter((item) => {
-        return item.description
-          .split(" ")[0]
-          .toLowerCase()
-          .startsWith(keyword.toLowerCase());
-      });
-      setSearchResults(results);
-    } else {
-      setSearchResults(images?.data);
-    }
-
-    setSearch(keyword);
-  };
-
-  // useEffect(() => {
-  //   setSearchResults(
-  //     searchResults?.filter((val: Image) => {
-  //       val?.description
-  //         ?.split(" ")[0]
-  //         ?.toLowerCase()
-  //         .includes(search.toLowerCase());
-  //     })
-  //   );
-  // }, [search]);
 
   return (
     <>
@@ -93,12 +60,14 @@ const Header: React.FC = () => {
                   }
                 }}
               />
-              <p className="ml-2 text-sm font-semibold">Select All</p>
+              <p className="ml-2 text-sm font-semibold whitespace-nowrap">
+                Select All
+              </p>
             </div>
           </div>
           <div className="flex items-center justify-between flex-1">
             <div
-              className="h-4 ml-4"
+              className="h-4 ml-0  lg:ml-4"
               onClick={() => {
                 dispatch(deleteCheckedImages(images?.data, checked));
                 dispatch(removeCheckOnImages());
@@ -107,10 +76,10 @@ const Header: React.FC = () => {
               <img
                 src={checked?.length > 0 ? BinActive : Bin}
                 alt=""
-                className="w-full h-full px-3 cursor-pointer"
+                className="object-contain w-full h-full px-3 cursor-pointer md:object-cover md:"
               />
             </div>
-            <div className="relative flex items-center mr-4 bg-white rounded-md w-[245px] h-[34px] border border-[#CCD2E2]">
+            <div className="relative flex items-center mr-1 md:mr-4 bg-white rounded-md sm:w-full md:w-[245px] h-[34px] border border-[#CCD2E2]">
               <div className="h-4 ">
                 <img
                   src={Search}
@@ -124,8 +93,14 @@ const Header: React.FC = () => {
                 placeholder="Search Media"
                 value={search}
                 onChange={(e) => {
-                  filterImages(e);
-                  dispatch(searchImage(images?.data, e.target.value));
+                  setSearch(e.target.value);
+                  dispatch(
+                    searchImage(
+                      images?.data,
+                      e.target.value,
+                      "https://api.unsplash.com/photos/?client_id=63XyR-MdNNJwESg67izcfmHsZOB07CMpSZd0iQ4nshI&per_page=20&orientation=landscape"
+                    )
+                  );
                 }}
               />
             </div>

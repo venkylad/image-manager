@@ -54,7 +54,6 @@ export const sortByTitle =
           ?.split(" ")[0]
           ?.localeCompare(b?.description?.split(" ")[0])
       );
-      console.log(payload);
       dispatch({
         type: ActionType.SORT_BY_TITLE,
         payload,
@@ -184,28 +183,21 @@ export const removeCheckOnImages = () => async (dispatch: Dispatch<Action>) => {
 };
 
 export const searchImage =
-  (imageData: Image[], searchText: string) =>
+  (imageData: Image[], searchText: string, url: string) =>
   async (dispatch: Dispatch<Action>) => {
     try {
-      let images = imageData;
       let payload;
-      payload = images?.filter((val) => {
-        if (searchText === "") {
-          return imageData;
-        } else {
-          return val?.description
-            ?.split(" ")[0]
-            ?.toLowerCase()
-            .includes(searchText.toLowerCase());
-        }
+      payload = imageData?.filter((val) => {
+        return val?.description
+          ?.split(" ")[0]
+          ?.toLowerCase()
+          .includes(searchText.toLowerCase());
       });
 
       if (searchText === "") {
-        console.log(imageData);
-        payload = images;
+        const { data } = await axios.get<Image[]>(url);
+        payload = data;
       }
-
-      console.log(imageData);
 
       dispatch({
         type: ActionType.SEARCH_IMAGES,

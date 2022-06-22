@@ -6,20 +6,7 @@ import { useSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
 import { postActions } from "../store";
 import AddSingleImage from "./AddSingleImage";
-
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    width: "1190px",
-    zIndex: 9999,
-    borderRadius: "8px",
-  },
-};
+import useWindowSize from "../hooks/useWindowSize";
 
 type Props = {
   open: boolean;
@@ -33,6 +20,22 @@ const AddImage: React.FC<Props> = ({ open, close }) => {
   const dispatch = useDispatch();
 
   const [openModal, setOpenModal] = useState(false);
+
+  const { width, height } = useWindowSize();
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      width: width > 767 ? "1190px" : "350px",
+      zIndex: 9999,
+      borderRadius: "8px",
+    },
+  };
 
   const handleSearchSubmit = (e: any) => {
     e.preventDefault();
@@ -59,7 +62,7 @@ const AddImage: React.FC<Props> = ({ open, close }) => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div className="p-10">
+        <div className="p-2 md:p-4 lg:p-10">
           <div className="flex justify-between">
             <div>
               <h4 className="mb-1 text-xl font-bold">Select Image</h4>
@@ -72,26 +75,26 @@ const AddImage: React.FC<Props> = ({ open, close }) => {
             </div>
           </div>
           <div className="mt-8">
-            <form className="flex" onSubmit={handleSearchSubmit}>
-              <div className="flex bg-white border border-[#CCD2E2] px-3 py-1 rounded">
+            <form className="flex flex-wrap" onSubmit={handleSearchSubmit}>
+              <div className="flex w-full max-w-[245px] bg-white border border-[#CCD2E2] px-3 py-1 rounded">
                 <img src={Search} alt="" className="w-4 h-full" />
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="pl-3 text-lg font-semibold outline-none focus:outline-none"
+                  className="w-full pl-3 text-lg font-semibold outline-none focus:outline-none"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                 />
               </div>
               <button
                 type="submit"
-                className="px-3 py-2 ml-4 text-sm font-semibold rounded border border-[#CCD2E2] shadow-md"
+                className="px-3 py-2 ml-0 mt-2 lg:mt-0 lg:ml-4 text-sm font-semibold rounded border border-[#CCD2E2] shadow-md"
               >
                 Search
               </button>
             </form>
           </div>
-          <div className="border-dashed border-4 border-[#CCD2E2] mt-10 p-2 rounded-lg">
+          <div className="border-dashed border-4 border-[#CCD2E2] mt-2 md:mt-4 lg:mt-10 p-2 rounded-lg">
             <div className="scrollbar-thin  scrollbar-thumb-gray-600 scrollbar-track-gray-300 scrollbar-thumb-rounded-full scrollbar-track-rounded-full p-4 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5  w-full h-full overflow-y-scroll max-h-[440px] ">
               {images?.results.map((item) => (
                 <div
@@ -111,7 +114,7 @@ const AddImage: React.FC<Props> = ({ open, close }) => {
               ))}
             </div>
           </div>
-          <div className="flex justify-end w-full mt-10">
+          <div className="flex justify-end w-full mt-2 md:mt-4 lg:mt-10">
             <button
               className="bg-gradient-to-r from-[#0099FF] to-[#0B79C3] px-3 py-2 text-white rounded-md"
               onClick={() => {
@@ -119,7 +122,6 @@ const AddImage: React.FC<Props> = ({ open, close }) => {
                 const selectedItem = images?.results.filter(
                   (item) => item?.id === selected
                 );
-                console.log(selectedItem);
                 dispatch(
                   postActions.selectImageToAdd({
                     id: selectedItem[0]?.id,
