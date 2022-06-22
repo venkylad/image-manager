@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { postActions } from "../store";
 import { useSelector } from "../hooks/useTypedSelector";

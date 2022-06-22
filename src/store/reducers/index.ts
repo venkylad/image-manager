@@ -3,13 +3,11 @@ import { combineReducers } from "redux";
 import {
   checkImageReducer,
   imageReducer,
-  postReducer,
   searchAddImageReducer,
   selectImageToAddReducer,
 } from "./postReducer";
 
 const reducers = combineReducers({
-  posts: postReducer,
   images: imageReducer,
   checked: checkImageReducer,
   search: searchAddImageReducer,

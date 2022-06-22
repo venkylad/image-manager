@@ -5,7 +5,6 @@ import Search from "../images/mag.svg";
 import { useSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
 import { postActions } from "../store";
-import { Image } from "../models/postModel";
 import AddSingleImage from "./AddSingleImage";
 
 const customStyles = {
@@ -35,11 +34,6 @@ const AddImage: React.FC<Props> = ({ open, close }) => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  //   function afterOpenModal() {
-  //     // references are now sync'd and can be accessed.
-  //     subtitle.style.color = "#f00";
-  //   }
-
   const handleSearchSubmit = (e: any) => {
     e.preventDefault();
     dispatch(
@@ -61,7 +55,6 @@ const AddImage: React.FC<Props> = ({ open, close }) => {
     <div>
       <Modal
         isOpen={open}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={close}
         style={customStyles}
         contentLabel="Example Modal"

@@ -1,19 +1,5 @@
-import Post, { Image } from "../../models/postModel";
+import { Image } from "../../models/postModel";
 import ActionType from "./action-types";
-
-interface GetPostRequestAction {
-  type: ActionType.GET_POST_REQUEST;
-}
-
-interface GetPostSuccessAction {
-  type: ActionType.GET_POST_SUCCESS;
-  payload: Post[];
-}
-
-interface GetPostFailAction {
-  type: ActionType.GET_POST_FAIL;
-  payload: string;
-}
 
 interface GetImagesAction {
   type: ActionType.GET_IMAGES;
@@ -82,9 +68,6 @@ interface AddNewImage {
   payload: Image[];
 }
 export type Action =
-  | GetPostRequestAction
-  | GetPostSuccessAction
-  | GetPostFailAction
   | GetImagesAction
   | GetImagesFailAction
   | GetImagesSuccessAction

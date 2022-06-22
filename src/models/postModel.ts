@@ -1,10 +1,3 @@
-type Post = {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-};
-
 export type Image = {
   id: string;
   created_at: string;
@@ -16,5 +9,3 @@ export type Image = {
   };
   description: string;
 };
-
-export default Post;

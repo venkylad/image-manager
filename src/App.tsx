@@ -10,7 +10,6 @@ const App: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(postActions.getPosts());
     dispatch(
       postActions.getImages(
         "https://api.unsplash.com/photos/?client_id=63XyR-MdNNJwESg67izcfmHsZOB07CMpSZd0iQ4nshI&per_page=20&orientation=landscape"

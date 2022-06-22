@@ -12,7 +12,7 @@ import {
   searchImage,
 } from "../store/actions/action-creators/postActions";
 import AddImage from "./AddImage";
-import AddSingleImage from "./AddSingleImage";
+import { Image } from "../models/postModel";
 
 const Header: React.FC = () => {
   const checked = useSelector((state) => state.checked);
@@ -22,8 +22,40 @@ const Header: React.FC = () => {
   const [sortBy, setSortBy] = useState("title");
   const [selectAll, setSelectAll] = useState(false);
   const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState(images?.data || []);
 
   const [openModal, setOpenModal] = useState(false);
+
+  console.log(searchResults);
+
+  const filterImages = (e: any) => {
+    const keyword = e.target.value;
+
+    if (keyword !== "") {
+      const results = searchResults.filter((item) => {
+        return item.description
+          .split(" ")[0]
+          .toLowerCase()
+          .startsWith(keyword.toLowerCase());
+      });
+      setSearchResults(results);
+    } else {
+      setSearchResults(images?.data);
+    }
+
+    setSearch(keyword);
+  };
+
+  // useEffect(() => {
+  //   setSearchResults(
+  //     searchResults?.filter((val: Image) => {
+  //       val?.description
+  //         ?.split(" ")[0]
+  //         ?.toLowerCase()
+  //         .includes(search.toLowerCase());
+  //     })
+  //   );
+  // }, [search]);
 
   return (
     <>
@@ -78,7 +110,7 @@ const Header: React.FC = () => {
                 className="w-full h-full px-3 cursor-pointer"
               />
             </div>
-            <div className="relative flex items-center mr-4 bg-white rounded-md w-[245px] h-[32px] border border-[#CCD2E2]">
+            <div className="relative flex items-center mr-4 bg-white rounded-md w-[245px] h-[34px] border border-[#CCD2E2]">
               <div className="h-4 ">
                 <img
                   src={Search}
@@ -87,12 +119,12 @@ const Header: React.FC = () => {
                 />
               </div>
               <input
-                className="border-0 font-semibold text-sm py-2 rounded-md h-[30px] focus: outline-none"
+                className="border-0 font-semibold text-sm  rounded-md h-[30px] focus: outline-none"
                 type="text"
                 placeholder="Search Media"
                 value={search}
                 onChange={(e) => {
-                  setSearch(e.target.value);
+                  filterImages(e);
                   dispatch(searchImage(images?.data, e.target.value));
                 }}
               />

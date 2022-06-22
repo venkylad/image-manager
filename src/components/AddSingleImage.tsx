@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import Cross from "../images/cross.svg";
-import Search from "../images/mag.svg";
 import { useSelector } from "../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
 import { postActions } from "../store";
@@ -15,7 +14,6 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     width: "712px",
-    maxHeight: "900px",
     zIndex: 9999,
     borderRadius: "8px",
   },
@@ -32,17 +30,16 @@ const AddSingleImage: React.FC<Props> = ({ open, close }) => {
 
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(image?.description || "");
   return (
     <div>
       <Modal
         isOpen={open}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={close}
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div className="p-10">
+        <div className="scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-300 scrollbar-thumb-rounded-full scrollbar-track-rounded-full p-10 max-h-[900px]">
           <div className="flex justify-between">
             <div>
               <h4 className="mb-1 text-xl font-bold">Add Image</h4>
